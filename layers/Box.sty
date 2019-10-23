@@ -34,7 +34,7 @@
                 (b) edge (g)
                 (h) edge (g)    
             ;     	
-            \path (b) edge ["\xlabel"',midway] (c);
+            \path (b) edge ["\large\xlabel"',midway] (c);
             
             \xdef\LastEastx{\k} %\k persists as \LastEastx after loop 
         }%Loop ends
@@ -44,7 +44,7 @@
         \coordinate (b1) at (0 ,-\y/2 , \z/2);
         \tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]       
         
-        \path (c) edge ["\small\zlabel"',depthlabel](f); %depth label
+        \path (c) edge ["\large\zlabel"',depthlabel](f); %depth label 
         \path (b1) edge ["\ylabel",midway] (a1);  %height label 	  
         
         
