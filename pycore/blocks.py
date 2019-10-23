@@ -28,6 +28,22 @@ def block_2ConvPool( name, botton, top, s_filer=256, n_filer=64, offset="(1,0,0)
         )
     ]
 
+def block_3DBox( name, botton, offset="(1,0,0)", size=(32,32,3.5), opacity=0.5 ):
+    return [
+    to_3DBox(
+        name="{}".format( name ),
+        offset=offset,
+        to="({}-east)".format( botton ),
+        width=size[0],
+        height=size[2],
+        depth=size[1],
+        ),
+    to_connection(
+        "{}".format( botton ),
+        "{}".format( name )
+        )
+    ]
+
 
 def block_Unconv( name, botton, top, s_filer=256, n_filer=64, offset="(1,0,0)", size=(32,32,3.5), opacity=0.5 ):
     return [
