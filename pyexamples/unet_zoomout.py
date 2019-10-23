@@ -37,7 +37,7 @@ arch = [
     to_begin(),
 
     to_3DBox(name='raw', offset="(-2,0,0)", to="(-2,0,0)", width=shapes[0][0], height=shapes[0][1],
-             depth=shapes[0][2], fill='\RawBox', scale=scale),
+             depth=shapes[0][2], fill='\RawBox', scale=scale, label=True),
 
     # input
     to_input('pictures/raw_model.png', 'raw-east', height=80*scale, width=80*scale),
@@ -81,7 +81,7 @@ main_output = [
 mt1_output = [
     to_3DBox(name='m_out', offset="(2,3,0)", to="(u6-east)",
              width=shapes[6][0], height=shapes[6][2],
-             depth=shapes[6][1], fill='\RawBox', scale=scale),
+             depth=shapes[6][1], fill='\RawBox', scale=scale, label=True),
 
     to_input(
         f'pictures/{outputimage}.png',
@@ -89,7 +89,7 @@ mt1_output = [
 
     to_3DBox(name='d_out', offset="(2,-3,0)", to="(u6-east)",
              width=shapes[6][0], height=shapes[6][2],
-             depth=shapes[6][1], fill='\RawBox', scale=scale),
+             depth=shapes[6][1], fill='\RawBox', scale=scale, label=True),
 
     to_input('pictures/d_model.png',
              to='d_out-east', width=40*scale, height=40*scale),
@@ -111,7 +111,7 @@ dir_path = [
 
     to_3DBox(name='d_out', offset="(2,0,0)", to="(u6_d-east)",
              width=shapes[6][0], height=shapes[6][2],
-             depth=shapes[6][1], fill='\RawBox', scale=scale),
+             depth=shapes[6][1], fill='\RawBox', scale=scale, label=True),
 
     to_input('pictures/d_model.png',
              to='d_out-east', width=40*scale, height=4*scale),

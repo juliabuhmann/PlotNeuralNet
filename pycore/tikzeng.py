@@ -78,15 +78,22 @@ def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(
     };
 """
 
-def to_3DBox( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)", width=30, height=40, depth=40, caption=" ", scale=0.1, fill='\MiniBatchColor'):
+def to_3DBox( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)",
+              width=30, height=40, depth=40, caption=" ", scale=0.1, fill='\MiniBatchColor', label=False):
+    if not label:
+        xlabel = " "
+        zlabel = " "
+    else:
+        xlabel = str(width)
+        zlabel = str(depth)
     print(width, height, depth)
     return r"""
 \pic[shift={ """+ offset +""" }] at """+ to +""" 
     {Box={
         name="""+ name +""",
         caption="""+ caption +""",
-        xlabel={{"""+ str(width) +""",}},
-        zlabel="""+ str(depth) +""",
+        xlabel={{"""+ xlabel +""",}},
+        zlabel="""+ zlabel +""",
         fill="""+fill + """,
         height="""+ str(height*scale) +""",
         width="""+ str(width*scale) +""",
