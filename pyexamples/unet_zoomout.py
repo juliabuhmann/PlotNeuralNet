@@ -7,14 +7,18 @@ from pycore.blocks import *
 shapes = [(42, 430, 430), (38, 142, 142), (34, 46, 46), (10, 14, 14),
           (14, 26, 26), (10, 74, 74), (6, 218, 218)]
 
-dh_unet = True
-
-if dh_unet:
+modeltype = 'ST_m'
+modeltype = 'MT1'
+outputimage = 'predictions_m_pred'
+if modeltype == 'MT2':
     offset_mask = 2.5
     offset_dir = -offset_mask
+
 else:
     offset_mask = 0
     offset_dir = 0
+if modeltype == 'ST_d':
+    outputimage = 'd_model'
 
 arch = [
     to_head('..'),
@@ -36,7 +40,9 @@ arch = [
 
     # bottleneck
     *block_3DBox(name='b4', botton='b3', offset="(2, 0, 0)", size=shapes[3]),
+    ]
 
+m_path = [
     # Upsampling Path
     *block_3DBox(name='u4', botton='b4', offset=f"(2, {offset_mask}, 0)",
                  size=shapes[4]),
@@ -49,14 +55,34 @@ arch = [
     *block_3DBox(name='u6', botton='u5', offset=f"(2, 0, 0)",
                  size=shapes[6]),
     to_skip('b1', 'u6', pos=1.25),
+]
 
+main_output = [
     to_3DBox(name='m_out', offset="(2,0,0)", to="(u6-east)",
              width=shapes[6][0], height=shapes[6][2],
              depth=shapes[6][1], fill='\RawBox'),
 
     to_input(
-        'pictures/predictions_m_pred.png',
+        f'pictures/{outputimage}.png',
         to='m_out-east', width=4, height=4),
+]
+
+mt1_output = [
+    to_3DBox(name='m_out', offset="(2,3,0)", to="(u6-east)",
+             width=shapes[6][0], height=shapes[6][2],
+             depth=shapes[6][1], fill='\RawBox'),
+
+    to_input(
+        f'pictures/{outputimage}.png',
+        to='m_out-east', width=4, height=4),
+
+    to_3DBox(name='d_out', offset="(2,-3,0)", to="(u6-east)",
+             width=shapes[6][0], height=shapes[6][2],
+             depth=shapes[6][1], fill='\RawBox'),
+
+    to_input('pictures/d_model.png',
+             to='d_out-east', width=4, height=4),
+
 ]
 
 dir_path = [
@@ -80,13 +106,20 @@ dir_path = [
              to='d_out-east', width=4, height=4),
 
 ]
-arch.extend(dir_path)
+# if not modeltype == 'ST_d':
+arch.extend(m_path)
+if modeltype == 'MT1':
+    arch.extend(mt1_output)
+else:
+    arch.extend(main_output)
+
+if modeltype == 'MT2':
+    arch.extend(dir_path)
 arch.append(to_end())
 
 
 def main():
-    namefile = str(sys.argv[0]).split('.')[0]
-    to_generate(arch, namefile + '.tex')
+    to_generate(arch, modeltype + '.tex')
 
 
 if __name__ == '__main__':
