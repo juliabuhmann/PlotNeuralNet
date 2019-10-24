@@ -16,9 +16,7 @@ if in_nm:
     shapes = [np.array(shape)*voxel_size for shape in shapes]
     scale = 0.025
 
-modeltype = 'ST_m'
-modeltype = 'MT1'
-
+modeltype = sys.argv[1] # possible values: ST_m, ST_d, MT1, MT2
 
 outputimage = 'predictions_m_pred'
 if modeltype == 'MT2':
