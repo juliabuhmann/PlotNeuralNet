@@ -69,7 +69,7 @@ m_path = [
 main_output = [
     to_3DBox(name='m_out', offset="(2,0,0)", to="(u6-east)",
              width=shapes[6][0], height=shapes[6][2],
-             depth=shapes[6][1], fill='\RawBox', scale=scale),
+             depth=shapes[6][1], fill='\RawBox', scale=scale, label=True),
 
     to_input(
         f'pictures/{outputimage}.png',
@@ -112,7 +112,7 @@ dir_path = [
              depth=shapes[6][1], fill='\RawBox', scale=scale, label=True),
 
     to_input('pictures/d_model.png',
-             to='d_out-east', width=40*scale, height=4*scale),
+             to='d_out-east', width=40*scale, height=40*scale),
 
 ]
 # if not modeltype == 'ST_d':
@@ -124,7 +124,9 @@ else:
 
 if modeltype == 'MT2':
     arch.extend(dir_path)
-arch.append(to_end())
+
+arch.append(to_connection('b1', 'b2'))
+
 
 
 def main():
