@@ -18,6 +18,7 @@ if in_nm:
 
 modeltype = sys.argv[1] # possible values: ST_m, ST_d, MT1, MT2
 
+add_feature_maps = True
 outputimage = 'predictions_m_pred'
 if modeltype == 'MT2':
     offset_mask = 2.5
@@ -125,8 +126,23 @@ else:
 if modeltype == 'MT2':
     arch.extend(dir_path)
 
-arch.append(to_connection('b1', 'b2'))
-
+if add_feature_maps:
+    z_shift = -6
+    arch.append(add_caption_style())
+    arch.append(add_caption('raw', '\# feature maps', 'caption00', shift=(-3, z_shift, 0)))
+    arch.append(add_caption('b1', '4', 'caption01', shift=(0, z_shift, 0)))
+    arch.append(add_caption('b2', '20', 'caption02', shift=(0, z_shift, 0)))
+    arch.append(add_caption('b3', '100', 'caption03', shift=(0, z_shift, 0)))
+    arch.append(add_caption('b4', '500', 'caption04', shift=(0, z_shift, 0)))
+    if modeltype == 'MT1' or modeltype == 'ST_d' or modeltype == 'ST_m':
+        arch.append(add_caption('u4', '100', 'caption04', shift=(0, z_shift, 0)))
+        arch.append(add_caption('u5', '20', 'caption05', shift=(0, z_shift, 0)))
+        arch.append(add_caption('u6', '4', 'caption06', shift=(0, z_shift, 0)))
+    if modeltype == 'MT2':
+        arch.append(add_caption('u4_d', '200', 'caption04', shift=(0, z_shift-offset_dir, 0)))
+        arch.append(add_caption('u5_d', '40', 'caption05', shift=(0, z_shift-offset_dir, 0)))
+        arch.append(add_caption('u6_d', '8', 'caption06', shift=(0, z_shift-offset_dir, 0)))
+    arch.append(to_end())
 
 
 def main():

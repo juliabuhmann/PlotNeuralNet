@@ -218,6 +218,19 @@ def to_skip_south( of, to, pos=1.25):
 """
 
 
+
+def add_caption(base, caption, name, shift=(0, -6, 0)):
+    command = f'\n\\node[nodarr, below = of {base}-anchor, shift={{({shift[0]}, {shift[1]}, {shift[2]})}}] ({name}) {{' + caption + '};\n'
+    return command
+
+
+def add_caption_style():
+    return """
+\\tikzset{
+nodarr/.style={fill=white, text=black, font=\\fontsize{60}{0}\\selectfont\\bf}
+}"""
+
+
 def to_end():
     return r"""
 \end{tikzpicture}
